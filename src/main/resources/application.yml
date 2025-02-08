@@ -8,12 +8,23 @@ spring:
             definition: pack|label
         stream:
             bindings:
-              packlabel-in-0:
-                  destination: order-accepted
-                  group: ${spring.application.name}
-              packlabel-out-0:
-                  destination: order-dispatched
-                  group: ${spring.application.name}
+                packlabel-in-0:
+                    destination: order-accepted
+                    group: ${spring.application.name}
+                packlabel-out-0:
+                    destination: order-dispatched
+        config:
+            fail-fast: false # In production, set to true
+            retry:
+                max-attempts: 5
+                initial-interval: 1000
+                max-interval: 2000
+                multiplier: 1.1
+            request-connect-timeout: 5000
+            request-read-timeout: 5000
+            uri: http://localhost:8888
+    config:
+        import: 'optional:configserver:'
 
     rabbitmq:
         host: localhost
@@ -21,3 +32,6 @@ spring:
         username: user
         password: password
         connection-timeout: 5s
+
+polar:
+    greeting: 'Welcome to the local ${spring.application.name}!'
