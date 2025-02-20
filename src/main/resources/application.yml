@@ -35,3 +35,32 @@ spring:
 
 polar:
     greeting: 'Welcome to the local ${spring.application.name}!'
+
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include:
+                    - refresh
+                    - health
+                    - metrics
+                    - prometheus
+
+    endpoint:
+        health:
+            show-components: always
+            show-details: always
+            probes:
+                enabled: true
+            group:
+                readiness:
+                    include:
+                        - readinessState
+                        - rabbit
+                liveness:
+                    include:
+                        - livenessState
+    metrics:
+        tags:
+            application: ${spring.application.name}

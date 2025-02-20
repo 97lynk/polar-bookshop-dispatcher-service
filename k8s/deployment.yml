@@ -5,7 +5,7 @@ metadata:
     labels:
         app: dispatcher-service
 spec:
-    replicas: 2
+    replicas: 1
     selector:
         matchLabels:
             app: dispatcher-service
@@ -37,3 +37,15 @@ spec:
                             value: user
                         -   name: SPRING_RABBITMQ_PASSWORD
                             value: password
+                    livenessProbe:
+                        httpGet:
+                            path: /actuator/health/liveness
+                            port: 9003
+                        initialDelaySeconds: 10
+                        periodSeconds: 5
+                    readinessProbe:
+                        httpGet:
+                            path: /actuator/health/readiness
+                            port: 9003
+                        initialDelaySeconds: 5
+                        periodSeconds: 15
